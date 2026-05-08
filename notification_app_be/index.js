@@ -1,28 +1,26 @@
 const express = require("express");
 const { Log } = require("../logging_middleware/logger");
-const cors=require('cors');
-require('dotenv').config();
+const connectDb = require("./config/db");
+const cors = require("cors");
+
+const userRoute= require("./routes/userRoute");
+const notRoute=require("./routes/notificationRoute");
+const logRoute=require("./routes/logRoute");
+
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-
 const TOKEN = process.env.TOKEN;
 
-app.get("/log", async (req, res) => {
-  await Log(
-    "backend",
-    "info",
-    "route",
-    "Home route accessed",
-    TOKEN
-  );
+app.use("/user",userRoute);
+app.use("/notification", notRoute);
+app.use("/log",logRoute);
 
-  res.send("Working");
+connectDb();
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+  console.log("Server started... ");
 });
-
-const PORT=process.env.PORT;
-app.listen(PORT,()=>{
-    console.log("Server started... ");
-})
