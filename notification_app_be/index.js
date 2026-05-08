@@ -15,7 +15,7 @@ app.use(express.json());
 
 const TOKEN = process.env.TOKEN;
 
-app.use("/user",userRoute);
+app.use("/auth",userRoute);
 app.use("/notification", notRoute);
 app.use("/log",logRoute);
 
